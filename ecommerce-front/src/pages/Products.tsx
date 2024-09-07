@@ -13,6 +13,7 @@ const Products = () => {
         <GridList<TProduct>
           records={productsFullInfo}
           renderItem={(record) => <Product {...record} />}
+          emptyMessage="There are no products"
         />
       </Loading>
     </>

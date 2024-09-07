@@ -13,6 +13,7 @@ const Categories = () => {
         <GridList<TCategory>
           records={records}
           renderItem={(records) => <Category {...records} />}
+          emptyMessage="There are no categories"
         />
       </Loading>
     </>

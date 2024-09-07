@@ -1,8 +1,10 @@
 import { Col, Row } from "react-bootstrap";
+import { LottieHandler } from "@components/feedback";
 
 type GridListProps<T> = {
   records: T[];
   renderItem: (record: T) => React.ReactNode;
+  emptyMessage: string;
 };
 
 type HasId = { id?: number };
@@ -10,6 +12,7 @@ type HasId = { id?: number };
 const GridList = <T extends HasId>({
   records,
   renderItem,
+  emptyMessage,
 }: GridListProps<T>) => {
   const categoriesList =
     records.length > 0
@@ -22,7 +25,7 @@ const GridList = <T extends HasId>({
             {renderItem(record)}
           </Col>
         ))
-      : "there are no categories";
+      : <LottieHandler type="empty" message={emptyMessage}/>
   return <Row>{categoriesList}</Row>;
 };
 
