@@ -31,7 +31,8 @@
       "@utils/*": ["src/utils/*"],
       "@utils": ["src/utils/index"],
       "@services/*": ["src/services/*"],
-      "@customTypes/*":["src/types/*"]
+      "@customTypes/*":["src/types/*"],
+      "@validation/*": ["src/validation/*"],
     },
     /* Linting */
     "strict": true,
