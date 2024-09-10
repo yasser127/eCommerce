@@ -1,7 +1,18 @@
 {
   "users": [
     {
-      "email": "yasserjouni07@gmail.com"
+      "email": "",
+      "password": "",
+      "firstName": "",
+      "lastName": "",
+      "id": 1
+    },
+    {
+      "email": "yasser127357@gmail.com",
+      "password": "$2a$10$sqKe4WxN4Ja7vQ6pyTkpMepOzmVMwl0mY7kdeKZZecKHvcu6vNft2",
+      "firstName": "yasser",
+      "lastName": "jouni",
+      "id": 2
     }
   ],
   "category": [
