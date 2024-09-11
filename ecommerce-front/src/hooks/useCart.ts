@@ -1,44 +1,47 @@
 import { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import {
-    actGetProductsByItems,
-    cartItemChangeQuantity,
-    cartItemRemove,
-    cleanProductFullInfo,
+  actGetProductsByItems,
+  cartItemChangeQuantity,
+  cartItemRemove,
+  cleanCartProductsFullInfo,
 } from "@store/cart/cartSlice";
+
 const useCart = () => {
-    const dispatch = useAppDispatch();
-    const { items, productsFullInfo, loading, error } = useAppSelector(
-        (state) => state.cart
-    );
+  const dispatch = useAppDispatch();
+  const { items, productsFullInfo, loading, error } = useAppSelector(
+    (state) => state.cart
+  );
 
-    useEffect(() => {
-        const promis =  dispatch(actGetProductsByItems());
-        return () => {
-            dispatch(cleanProductFullInfo());
-            promis.abort();
-        };
-    }, [dispatch]);
+  useEffect(() => {
+    const promise = dispatch(actGetProductsByItems());
 
-    const products = productsFullInfo.map((el) => ({
-        ...el,
-        quantity: items[el.id],
-    }));
+    return () => {
+      promise.abort();
+      dispatch(cleanCartProductsFullInfo());
+    };
+  }, [dispatch]);
 
-    const changeQuantityHandler = useCallback(
-        (id: number, quantity: number) => {
-            dispatch(cartItemChangeQuantity({ id, quantity }));
-        },
-        [dispatch]
-    );
+  const changeQuantityHandler = useCallback(
+    (id: number, quantity: number) => {
+      dispatch(cartItemChangeQuantity({ id, quantity }));
+    },
+    [dispatch]
+  );
 
-    const removeItemHandler = useCallback(
-        (id: number) => {
-            dispatch(cartItemRemove(id));
-        },
-        [dispatch]
-    );
-    return { loading, error, products, changeQuantityHandler, removeItemHandler }
-}
+  const removeItemHandler = useCallback(
+    (id: number) => {
+      dispatch(cartItemRemove(id));
+    },
+    [dispatch]
+  );
 
-export default useCart
+  const products = productsFullInfo.map((el) => ({
+    ...el,
+    quantity: items[el.id],
+  }));
+
+  return { loading, error, products, changeQuantityHandler, removeItemHandler };
+};
+
+export default useCart;

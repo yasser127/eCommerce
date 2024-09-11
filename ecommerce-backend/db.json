@@ -13,6 +13,20 @@
       "firstName": "yasser",
       "lastName": "jouni",
       "id": 2
+    },
+    {
+      "email": "yasserjouni07@gmail.com",
+      "password": "$2a$10$mqbnpAtypKHFZTEP9lh7aOmvZp0ed8kvQZEepktYLb.CoAZm6aT26",
+      "firstName": "yasser1",
+      "lastName": "jouni1",
+      "id": 3
+    },
+    {
+      "email": "yasser1273259@gmail.com",
+      "password": "$2a$10$okQkYhADLSwUe9ca1iCC/OHS//owcWSR4ApJOJuODqmLhh60vC.1.",
+      "firstName": "yasser2",
+      "lastName": "jouni2",
+      "id": 4
     }
   ],
   "category": [
@@ -128,6 +142,11 @@
       "userId": 1,
       "productId": 2,
       "id": 4
+    },
+    {
+      "userId": 1,
+      "productId": 17,
+      "id": 5
     }
   ]
 }

@@ -2,10 +2,11 @@ import { useEffect, useState, memo } from "react";
 import { useAppDispatch } from "@store/hooks";
 import { actLikeToggle } from "@store/wishlist/wishlistSlice";
 import { addToCart } from "@store/cart/cartSlice";
-import { Button, Modal, Spinner } from "react-bootstrap";
-import { TProduct } from "@types";
 import Like from "@assets/svg/like.svg?react";
 import LikeFill from "@assets/svg/like-fill.svg?react";
+import { Button, Spinner, Modal } from "react-bootstrap";
+import { TProduct } from "@types";
+
 import styles from "./styles.module.css";
 const { product, productImg, maximumNotice, wishlistBtn } = styles;
 
@@ -21,10 +22,14 @@ const Product = memo(
     isAuthenticated,
   }: TProduct) => {
     const dispatch = useAppDispatch();
-    const [showmodal, setShowmodal] = useState(false);
+
+    const [showModal, setShowModal] = useState(false);
     const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+
     const [isLoading, setIsLoading] = useState(false);
+
     const currentRemainingQuantity = max - (quantity ?? 0);
+
     const quantityReachedToMax = currentRemainingQuantity <= 0 ? true : false;
 
     useEffect(() => {
@@ -43,6 +48,7 @@ const Product = memo(
       dispatch(addToCart(id));
       setIsBtnDisabled(true);
     };
+
     const likeToggleHandler = () => {
       if (isAuthenticated) {
         if (!isLoading) {
@@ -51,26 +57,21 @@ const Product = memo(
             .unwrap()
             .then(() => setIsLoading(false))
             .catch(() => setIsLoading(false));
-        } else {
-          setShowmodal(true);
         }
+      } else {
+        setShowModal(true);
       }
     };
+
     return (
       <>
-        <Modal show={showmodal} onHide={() => setShowmodal(false)}>
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>Login Required</Modal.Title>
           </Modal.Header>
-
           <Modal.Body>
-            <p>You need to login so you can add items to your wishlist/</p>
+            You need to login first to add this item to your wishlist.
           </Modal.Body>
-
-          <Modal.Footer>
-            <Button variant="secondary">Close</Button>
-            <Button variant="primary">Save changes</Button>
-          </Modal.Footer>
         </Modal>
 
         <div className={product}>
@@ -87,10 +88,10 @@ const Product = memo(
             <img src={img} alt={title} />
           </div>
           <h2>{title}</h2>
-          <h3>{price} EGP</h3>
+          <h3>{price.toFixed(2)} EGP</h3>
           <p className={maximumNotice}>
             {quantityReachedToMax
-              ? "You reach to the limit"
+              ? "You reached to the limit"
               : `You can add ${currentRemainingQuantity} item(s)`}
           </p>
           <Button

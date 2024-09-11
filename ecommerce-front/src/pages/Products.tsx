@@ -5,15 +5,16 @@ import { Loading } from "@components/feedback";
 import { TProduct } from "@types";
 
 const Products = () => {
-  const { loading, error, productsFullInfo, params } = useProducts();
+  const { loading, error, productPrefix, productsFullInfo } = useProducts();
+
   return (
     <>
-      <Heading title={`${params.prefix?.toUpperCase()} Products`} />
+      <Heading title={`${productPrefix?.toUpperCase()} Products`} />
       <Loading status={loading} error={error} type="product">
         <GridList<TProduct>
+          emptyMessage="There are no products"
           records={productsFullInfo}
           renderItem={(record) => <Product {...record} />}
-          emptyMessage="There are no products"
         />
       </Loading>
     </>

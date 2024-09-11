@@ -1,18 +1,19 @@
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
 
-type Tstatus = "idle" | "checking" | "available" | "notAvailable" | "failed";
+type TStatus = "idle" | "checking" | "available" | "notAvailable" | "failed";
 
-const useEmailCheckAvailability = () => {
+const useCheckEmailAvailability = () => {
   const [emailAvailabilityStatus, setEmailAvailabilityStatus] =
-    useState<Tstatus>("idle");
-  const [enteredEmail, setEnteredEmail] = useState<string | null>(null);
+    useState<TStatus>("idle");
+
+  const [enteredEmail, setEnteredEmail] = useState<null | string>(null);
 
   const checkEmailAvailability = async (email: string) => {
     setEnteredEmail(email);
     setEmailAvailabilityStatus("checking");
     try {
-      const response = await axios.get(`users?email=${email}`);
+      const response = await axios.get(`/users?email=${email}`);
       if (!response.data.length) {
         setEmailAvailabilityStatus("available");
       } else {
@@ -22,11 +23,17 @@ const useEmailCheckAvailability = () => {
       setEmailAvailabilityStatus("failed");
     }
   };
+
   const resetCheckEmailAvailability = () => {
     setEmailAvailabilityStatus("idle");
     setEnteredEmail(null);
-  }  
-  return { checkEmailAvailability, emailAvailabilityStatus, enteredEmail, resetCheckEmailAvailability };
-};
+  };
 
-export default useEmailCheckAvailability;
+  return {
+    emailAvailabilityStatus,
+    enteredEmail,
+    checkEmailAvailability,
+    resetCheckEmailAvailability,
+  };
+};
+export default useCheckEmailAvailability;

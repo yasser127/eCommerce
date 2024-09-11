@@ -32,7 +32,7 @@
       "@utils": ["src/utils/index"],
       "@services/*": ["src/services/*"],
       "@customTypes/*":["src/types/*"],
-      "@validation/*": ["src/validation/*"],
+      "@validations/*": ["src/validations/*"],
     },
     /* Linting */
     "strict": true,

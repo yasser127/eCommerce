@@ -4,8 +4,8 @@ import { actAuthRegister, resetUI } from "@store/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema, signUpType } from "@validation/SignUpSchema";
-import useCheckEmailAvailability from "@hooks/useEmailCheckAvailability";
+import { signUpSchema, signUpType } from "@validations/signUpSchema";
+import useCheckEmailAvailability from "@hooks/useCheckEmailAvailability";
 
 const useRegister = () => {
   const dispatch = useAppDispatch();

@@ -4,7 +4,7 @@ import { actAuthLogin, resetUI } from "@store/auth/authSlice";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signInSchema, signInType } from "@validation/SignInSchema";
+import { signInSchema, signInType } from "@validations/signInSchema";
 
 const useLogin = () => {
   const dispatch = useAppDispatch();
