@@ -1,41 +1,21 @@
 import { Form, Button, Col, Row, Alert, Spinner } from "react-bootstrap";
 import { Heading } from "@components/common";
 import Input from "@components/Form/Input";
-import { SignInSchema, signInType } from "@validation/SignInSchema";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@store/hooks";
-import { actAuthLogin, resetUI } from "@store/auth/authSlice";
-import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import useLogin from "@hooks/useLogin";
 
 const Login = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { error, loading, accessToken } = useAppSelector((state) => state.auth);
-  const [searchParams, setSearchParams] = useSearchParams();
   const {
+    error,
+    loading,
+    accessToken,
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<signInType>({
-    mode: "onBlur",
-    resolver: zodResolver(SignInSchema),
-  });
+    formErrors,
+    submitForm,
+    searchParams,
+  } = useLogin();
 
-  const submitForm: SubmitHandler<signInType> = (data) => {
-    if (searchParams.get("message")) {
-      setSearchParams("");
-    }
-    dispatch(actAuthLogin(data))
-      .unwrap()
-      .then(() => navigate("/"));
-  };
-
-  useEffect(() => {
-    dispatch(resetUI());
-  }, [dispatch]);
   if (accessToken) {
     <Navigate to={"/"} />;
   }
@@ -60,13 +40,13 @@ const Login = () => {
               label="email"
               name="email"
               register={register}
-              error={errors.email?.message}
+              error={formErrors.email?.message}
             />
             <Input
               label="Password"
               name="password"
               register={register}
-              error={errors.password?.message}
+              error={formErrors.password?.message}
             />
             <Button variant="info" type="submit" style={{ color: "white" }}>
               {loading === "pending" ? (

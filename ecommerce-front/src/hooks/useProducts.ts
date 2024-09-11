@@ -11,6 +11,7 @@ const useProducts = () => {
     const { loading, error, records } = useAppSelector((state) => state.products);
     const cartItems = useAppSelector((state) => state.cart.items);
     const wishListItemsId = useAppSelector((state) => state.wishlist.itemsId);
+    const userAccessToken = useAppSelector((state) => state.auth.accessToken);
 
     useEffect(() => {
         const promis = dispatch(actGetProductsByCatPrefix(params.prefix as string));
@@ -25,9 +26,10 @@ const useProducts = () => {
         ...el,
         quantity: cartItems[el.id],
         isLiked: wishListItemsId.includes(el.id),
+        isAuthinticated: userAccessToken ? true : false,
     }));
 
-    return {loading, error, productsFullInfo, params}
+    return { loading, error, productsFullInfo, params }
 }
 
 export default useProducts

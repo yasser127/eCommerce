@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import {
   actGetWishlist,
-  cleanWishlistProductFullInfo,
+  cleanWishlistProductsFullInfo,
 } from "@store/wishlist/wishlistSlice";
 
 const useWishlist = () => {
@@ -13,10 +13,10 @@ const useWishlist = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
 
   useEffect(() => {
-    const promis =  dispatch(actGetWishlist());
+    const promise = dispatch(actGetWishlist("ProductsFullInfo"));
     return () => {
-      dispatch(cleanWishlistProductFullInfo());
-      promis.abort();
+      promise.abort();
+      dispatch(cleanWishlistProductsFullInfo());
     };
   }, [dispatch]);
 
@@ -24,9 +24,10 @@ const useWishlist = () => {
     ...el,
     quantity: cartItems[el.id],
     isLiked: true,
+    isAuthenticated: true,
   }));
 
-  return { loading, error, records };
+  return { records, loading, error };
 };
 
 export default useWishlist;

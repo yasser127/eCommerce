@@ -1,64 +1,26 @@
-import { useAppDispatch, useAppSelector } from "@store/hooks";
-import { actAuthRegister, resetUI } from "@store/auth/authSlice";
-import { Form, Button, Col, Row, Spinner } from "react-bootstrap";
-import { Heading } from "@components/common";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpType, signUpSchema } from "@validation/SignUpSchema";
-import { Input } from "@components/Form";
-import useEmailCheckAvailability from "@hooks/useEmailCheckAvailability";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import useRegister from "@hooks/useRegister";
 import { Navigate } from "react-router-dom";
+import { Heading } from "@components/common";
+import { Input } from "@components/Form";
+import { Form, Button, Row, Col, Spinner } from "react-bootstrap";
 
 const Register = () => {
-  const dispatch = useAppDispatch();
-  const { loading, error, accessToken } = useAppSelector((state) => state.auth);
-  const navigate = useNavigate();
   const {
-    getFieldState,
-    trigger,
+    loading,
+    error,
+    accessToken,
+    formErrors,
+    emailAvailabilityStatus,
+    submitForm,
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<signUpType>({
-    mode: "onBlur",
-    resolver: zodResolver(signUpSchema),
-  });
+    emailOnBlurHandler,
+  } = useRegister();
 
-  const submitForm: SubmitHandler<signUpType> = async (data) => {
-    const { firstName, lastName, email, password } = data;
-    dispatch(actAuthRegister({ firstName, lastName, email, password }))
-      .unwrap()
-      .then(() => {
-        navigate("/login?message=acount_created");
-      });
-  };
-  const {
-    checkEmailAvailability,
-    emailAvailabilityStatus,
-    enteredEmail,
-    resetCheckEmailAvailability,
-  } = useEmailCheckAvailability();
-
-  const emailOnBlurHandler = async (e: React.FocusEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    await trigger("email");
-    const { isDirty, invalid } = getFieldState("email");
-    if (isDirty && !invalid && value !== enteredEmail) {
-      checkEmailAvailability(value);
-    }
-    if (isDirty && invalid && enteredEmail && value.length === 0) {
-      resetCheckEmailAvailability();
-    }
-  };
-
-  useEffect(() => {
-    dispatch(resetUI());
-  }, [dispatch]);
   if (accessToken) {
-    <Navigate to={"/"} />;
+    return <Navigate to="/" />;
   }
+
   return (
     <>
       <Heading title="User Registration" />
@@ -68,58 +30,55 @@ const Register = () => {
             <Input
               label="First Name"
               name="firstName"
-              type="text"
               register={register}
-              error={errors.firstName?.message}
+              error={formErrors.firstName?.message}
             />
             <Input
               label="Last Name"
               name="lastName"
-              type="text"
               register={register}
-              error={errors.lastName?.message}
+              error={formErrors.lastName?.message}
             />
             <Input
               label="Email Address"
               name="email"
               register={register}
+              onBlur={emailOnBlurHandler}
               error={
-                errors.email?.message
-                  ? errors.email.message
+                formErrors.email?.message
+                  ? formErrors.email?.message
                   : emailAvailabilityStatus === "notAvailable"
-                  ? "this email is not available for you to use."
+                  ? "This email is already in use."
                   : emailAvailabilityStatus === "failed"
-                  ? "error from the server."
+                  ? "Error from the server."
                   : ""
               }
-              onBlur={emailOnBlurHandler}
               formText={
                 emailAvailabilityStatus === "checking"
-                  ? "We're currently checking the availability of your email, please wait..."
+                  ? "We're currently checking the availability of this email address. Please wait a moment."
                   : ""
               }
               success={
                 emailAvailabilityStatus === "available"
-                  ? "This email is available for use"
+                  ? "This email is available for use."
                   : ""
               }
               disabled={emailAvailabilityStatus === "checking" ? true : false}
             />
             <Input
+              type="password"
               label="Password"
               name="password"
-              type="password"
               register={register}
-              error={errors.password?.message}
+              error={formErrors.password?.message}
             />
             <Input
+              type="password"
               label="Confirm Password"
               name="confirmPassword"
-              type="password"
               register={register}
-              error={errors.confirmPassword?.message}
+              error={formErrors.confirmPassword?.message}
             />
-
             <Button
               variant="info"
               type="submit"
