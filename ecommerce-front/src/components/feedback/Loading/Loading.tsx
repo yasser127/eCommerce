@@ -2,6 +2,7 @@ import CategorySkeleton from "@components/skeletons/CategorySkeleton/CategorySke
 import ProductSkeleton from "@components/skeletons/ProductSkeleton/ProductSkeleton";
 import CartSkeleton from "@components/skeletons/CartSkeleton/CartSkeleton";
 import { TLoading } from "@types";
+import TableSkeleton
 
 const skeletonTypes = {
   category: CategorySkeleton,

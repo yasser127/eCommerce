@@ -6,18 +6,23 @@ import {
   cartItemRemove,
   cleanCartProductsFullInfo,
 } from "@store/cart/cartSlice";
+import { resetOrderStatus } from "@store/orders/ordersSlice";
 
 const useCart = () => {
   const dispatch = useAppDispatch();
+  const placeOrderStatus = useAppSelector((state) =>  state.orders.loading )
   const { items, productsFullInfo, loading, error } = useAppSelector(
     (state) => state.cart
   );
 
+  const userAccessToken = useAppSelector((state) => state.auth.accessToken)
+
   useEffect(() => {
     const promise = dispatch(actGetProductsByItems());
-
+    
     return () => {
       promise.abort();
+      dispatch(resetOrderStatus());
       dispatch(cleanCartProductsFullInfo());
     };
   }, [dispatch]);
@@ -32,6 +37,7 @@ const useCart = () => {
   const removeItemHandler = useCallback(
     (id: number) => {
       dispatch(cartItemRemove(id));
+      
     },
     [dispatch]
   );
@@ -41,7 +47,7 @@ const useCart = () => {
     quantity: items[el.id],
   }));
 
-  return { loading, error, products, changeQuantityHandler, removeItemHandler };
+  return { loading, error, products, changeQuantityHandler, removeItemHandler, userAccessToken, placeOrderStatus };
 };
 
 export default useCart;

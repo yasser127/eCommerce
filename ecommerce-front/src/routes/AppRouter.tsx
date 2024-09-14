@@ -2,6 +2,9 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // layouts
 const MainLayout = lazy(() => import("@layouts/MainLayout/MainLayout"));
+const ProfileLayout = lazy(
+  () => import("@layouts/ProfileLayout/ProfileLayout")
+);
 //lotie animation
 import { LottieHandler, PageSuspenseFallback } from "@components/feedback";
 // pages
@@ -14,7 +17,8 @@ const AboutUs = lazy(() => import("@pages/AboutUs"));
 const Login = lazy(() => import("@pages/Login"));
 const Register = lazy(() => import("@pages/Register"));
 import Error from "@pages/Error";
-import Profile from "@pages/Profile";
+const Account = lazy(() => import("@pages/Account"));
+const Orders = lazy(() => import("@pages/Orders"));
 import ProtectedRoute from "@components/Auth/ProtectedRoute";
 
 const router = createBrowserRouter([
@@ -116,10 +120,28 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <PageSuspenseFallback>
-              <Profile />
+              <ProfileLayout />
             </PageSuspenseFallback>
           </ProtectedRoute>
         ),
+        children: [
+          {
+            index: true,
+            element: (
+              <PageSuspenseFallback>
+                <Account />
+              </PageSuspenseFallback>
+            ),
+          },
+          {
+            path: "orders",
+            element: (
+              <PageSuspenseFallback>
+                <Orders />
+              </PageSuspenseFallback>
+            ),
+          },
+        ],
       },
     ],
   },

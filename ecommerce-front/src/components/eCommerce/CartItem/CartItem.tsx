@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Form, Button } from "react-bootstrap";
 import { TProduct } from "@types";
 import styles from "./styles.module.css";
+import ProductInfo from "../ProductInfo/ProductInfo";
 
 const { cartItem, product, productImg, productInfo, cartItemSelection } =
   styles;
@@ -42,12 +43,7 @@ const CartItem = memo(
     return (
       <div className={cartItem}>
         <div className={product}>
-          <div className={productImg}>
-            <img src={img} alt={title} />
-          </div>
-          <div className={productInfo}>
-            <h2>{title}</h2>
-            <h3>{price.toFixed(2)} EGP</h3>
+          <ProductInfo title={title} price={price} img={img} direction="column">
             <Button
               variant="secondary"
               style={{ color: "white", width: "100px" }}
@@ -56,7 +52,7 @@ const CartItem = memo(
             >
               Remove
             </Button>
-          </div>
+          </ProductInfo>
         </div>
 
         <div className={cartItemSelection}>

@@ -4,8 +4,15 @@ import { Loading, LottieHandler } from "@components/feedback";
 import { CartItemList, CartSubtotalPrice } from "@components/eCommerce";
 
 const Cart = () => {
-  const { loading, error, products, changeQuantityHandler, removeItemHandler } =
-    useCart();
+  const {
+    loading,
+    error,
+    products,
+    changeQuantityHandler,
+    removeItemHandler,
+    userAccessToken,
+    placeOrderStatus,
+  } = useCart();
   return (
     <>
       <Heading title="Your Cart" />
@@ -17,8 +24,16 @@ const Cart = () => {
               changeQuantityHandler={changeQuantityHandler}
               removeItemHandler={removeItemHandler}
             />
-            <CartSubtotalPrice products={products} />
+            <CartSubtotalPrice
+              products={products}
+              userAccessToken={userAccessToken}
+            />
           </>
+        ) : placeOrderStatus === "succeeded" ? (
+          <LottieHandler
+            message="Your order hase been placed successfuly"
+            type="success"
+          />
         ) : (
           <LottieHandler message="Your cart is empty" type="empty" />
         )}

@@ -3,12 +3,14 @@ import notFound from "@assets/svg/lottieFiles/notFound.json";
 import empty from "@assets/svg/lottieFiles/empty.json";
 import loading from "@assets/svg/lottieFiles/loading.json";
 import error from "@assets/svg/lottieFiles/error.json";
+import success from "@assets/svg/lottieFiles/success.json";
 
 const LottieFileMap = {
   notFound,
   empty,
   loading,
   error,
+  success,
 };
 
 type LottieHandlerProps = {
